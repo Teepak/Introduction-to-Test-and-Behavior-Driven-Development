@@ -101,6 +101,33 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(new_product.available, product.available)
         self.assertEqual(new_product.category, product.category)
 
-    #
-    # ADD YOUR TEST CASES HERE
-    #
+    def test_update_product(self):
+    """It should update an existing product"""
+    product = ProductFactory()
+    product.create()
+
+    updated_product = Product.query.get(product.id)
+    updated_product.name = "Updated Fedora"
+    updated_product.description = "A stylish red hat"
+    updated_product.price = 15.00
+    updated_product.available = False
+    updated_product.update()
+
+    # Fetch the updated product and assert that the changes were made
+    fetched_product = Product.query.get(product.id)
+    self.assertEqual(fetched_product.name, "Updated Fedora")
+    self.assertEqual(fetched_product.description, "A stylish red hat")
+    self.assertEqual(Decimal(fetched_product.price), 15.00)
+    self.assertEqual(fetched_product.available, False)
+
+def test_delete_product(self):
+    """It should delete an existing product"""
+    product = ProductFactory()
+    product.create()
+
+    product_id = product.id
+    product.delete()
+
+    # Try to fetch the deleted product and assert that it does not exist
+    deleted_product = Product.query.get(product_id)
+    self.assertIsNone(deleted_product)
