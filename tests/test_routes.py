@@ -163,9 +163,36 @@ class TestProductRoutes(TestCase):
         response = self.client.post(BASE_URL, data={}, content_type="plain/text")
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
-    #
-    # ADD YOUR TEST CASES HERE
-    #
+    def test_get_all_products(self):
+        """It should retrieve a list of all products"""
+        # Create some test products
+        products = self._create_products(count=3)
+
+        response = self.client.get(BASE_URL)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        product_list = response.get_json()
+        self.assertEqual(len(product_list), 3)  # Ensure all products are returned
+        # Check that the returned product names match the created ones
+        for i, product in enumerate(products):
+            self.assertEqual(product_list[i]["name"], product.name)
+
+    def test_get_product_by_id(self):
+        """It should retrieve a product by its ID"""
+        product = self._create_products()[0]
+        product_id = product.id
+
+        response = self.client.get(f"{BASE_URL}/{product_id}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        retrieved_product = response.get_json()
+        self.assertEqual(retrieved_product["id"], product_id)
+        self.assertEqual(retrieved_product["name"], product.name)
+
+    def test_get_product_by_id_not_found(self):
+        """It should return a 404 status when trying to retrieve a non-existent product"""
+        response = self.client.get(f"{BASE_URL}/1000")  # Assuming product with ID 1000 does not exist
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     ######################################################################
     # Utility functions
@@ -178,3 +205,4 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         # logging.debug("data = %s", data)
         return len(data)
+    
