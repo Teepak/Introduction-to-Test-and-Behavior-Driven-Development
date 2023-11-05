@@ -97,32 +97,57 @@ def create_products():
 ######################################################################
 # L I S T   A L L   P R O D U C T S
 ######################################################################
+@app.route("/products", methods=["GET"])
+def get_products():
+    """
+    Lists all products
+    This endpoint will return a list of all products.
+    """
+    products = []  # Placeholder for listing all products
+    return jsonify(products)
 
-#
-# PLACE YOUR CODE TO LIST ALL PRODUCTS HERE
-#
 
 ######################################################################
 # R E A D   A   P R O D U C T
 ######################################################################
+@app.route("/products/<int:product_id>", methods=["GET"])
+def get_product(product_id):
+    """
+    Retrieves a specific product by ID
+    This endpoint will return the details of a product based on its ID.
+    """
+    product = None  # Placeholder for reading a product by ID
+    if product is None:
+        abort(status.HTTP_404_NOT_FOUND)
+    return jsonify(product)
 
-#
-# PLACE YOUR CODE HERE TO READ A PRODUCT
-#
 
 ######################################################################
 # U P D A T E   A   P R O D U C T
 ######################################################################
+@app.route("/products/<int:product_id>", methods=["PUT"])
+def update_product(product_id):
+    """
+    Updates a specific product by ID
+    This endpoint will update the details of a product based on its ID.
+    """
+    data = request.get_json()
+    product = None  # Placeholder for updating a product by ID
+    if product is None:
+        abort(status.HTTP_404_NOT_FOUND)
+    return jsonify(product)
 
-#
-# PLACE YOUR CODE TO UPDATE A PRODUCT HERE
-#
 
 ######################################################################
 # D E L E T E   A   P R O D U C T
 ######################################################################
-
-
-#
-# PLACE YOUR CODE TO DELETE A PRODUCT HERE
-#
+@app.route("/products/<int:product_id>", methods=["DELETE"])
+def delete_product(product_id):
+    """
+    Deletes a specific product by ID
+    This endpoint will delete a product based on its ID.
+    """
+    product = None  # Placeholder for deleting a product by ID
+    if product is None:
+        abort(status.HTTP_404_NOT_FOUND)
+    return jsonify(status="Product deleted")
