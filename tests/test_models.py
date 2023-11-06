@@ -160,3 +160,22 @@ def test_find_product_by_availability(self):
     product.create()
     products_found = Product.find_by_availability(availability)
     self.assertEqual(products_found[0], product)
+
+# Test the READ endpoint
+def test_read_product(self):
+    """It should read a product from the database"""
+    product = ProductFactory()
+    product.create()
+
+    # Read the product from the database
+    retrieved_product = Product.query.get(product.id)
+
+    # Check the retrieved product data
+    self.assertEqual(retrieved_product.id, product.id)
+    self.assertEqual(retrieved_product.name, product.name)
+    self.assertEqual(retrieved_product.description, product.description)
+    self.assertEqual(retrieved_product.price, product.price)
+    self.assertEqual(retrieved_product.available, product.available)
+    self.assertEqual(retrieved_product.category, product.category)
+
+
