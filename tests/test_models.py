@@ -131,3 +131,32 @@ def test_delete_product(self):
     # Try to fetch the deleted product and assert that it does not exist
     deleted_product = Product.query.get(product_id)
     self.assertIsNone(deleted_product)
+def test_list_all_products(self):
+    """It should list all products"""
+    products = Product.all()
+    self.assertEqual(len(products), 0)
+    product = ProductFactory()
+    product.create()
+    products = Product.all()
+    self.assertEqual(len(products), 1)
+def test_find_product_by_name(self):
+    """It should find a product by name"""
+    product_name = "Fedora"
+    product = ProductFactory(name=product_name)
+    product.create()
+    product_found = Product.find_by_name(product_name)
+    self.assertEqual(product_found, product)
+def test_find_product_by_category(self):
+    """It should find a product by category"""
+    category = Category.CLOTHS
+    product = ProductFactory(category=category)
+    product.create()
+    products_found = Product.find_by_category(category)
+    self.assertEqual(products_found[0], product)
+def test_find_product_by_availability(self):
+    """It should find a product by availability"""
+    availability = True
+    product = ProductFactory(available=availability)
+    product.create()
+    products_found = Product.find_by_availability(availability)
+    self.assertEqual(products_found[0], product)
